@@ -1,9 +1,13 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import PortableBody from '@/components/portable-text/PortableBody';
-import { getPostBySlug } from '@/sanity/lib/queries';
+import RelatedArticles from '@/components/RelatedArticles';
+import { getPostBySlug, getRelatedPosts } from '@/sanity/lib/queries';
 import { urlFor } from '@/sanity/lib/image';
+import { siteConfig } from '@/lib/metadata';
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
 
 type PageProps = {
   params: Promise<{
@@ -19,8 +23,42 @@ export default async function PostPage({ params }: PageProps) {
     notFound();
   }
 
+  // Fetch related posts based on category
+  const categoryIds = post.categories?.map((cat: any) => cat._id).filter(Boolean) || [];
+  const relatedPosts = categoryIds.length > 0 
+    ? await getRelatedPosts(post._id, categoryIds, 3)
+    : [];
+
+  // Generate structured data
+  const articleSchema = generateArticleSchema({
+    title: post.title,
+    description: post.excerpt,
+    slug: post.slug,
+    publishedAt: post.publishedAt,
+    author: post.author,
+    imageUrl: post.featuredImage ? urlFor(post.featuredImage).width(1200).height(630).url() : undefined,
+    categories: post.categories,
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema(
+    post.categories || [],
+    post.title,
+    post.slug
+  );
+
   return (
-    <article>
+    <>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <article>
       {/* Featured Image */}
       {post.featuredImage && (
         <div className="mb-10 sm:mb-12 -mx-5 sm:-mx-6">
@@ -76,7 +114,20 @@ export default async function PostPage({ params }: PageProps) {
           {post.categories && post.categories.length > 0 && (
             <>
               <span>•</span>
-              <span>{post.categories.map(cat => cat.title).join(', ')}</span>
+              <span>
+                {post.categories.map((cat: any, index: number) => (
+                  <span key={cat._id || index}>
+                    {index > 0 && ', '}
+                    <Link 
+                      href={`/${cat.slug}`}
+                      className="hover:opacity-70 transition-opacity"
+                      style={{ color: 'var(--accent)' }}
+                    >
+                      {cat.title}
+                    </Link>
+                  </span>
+                ))}
+              </span>
             </>
           )}
         </div>
@@ -86,6 +137,9 @@ export default async function PostPage({ params }: PageProps) {
       <div className="prose-custom">
         <PortableBody value={post.body} />
       </div>
+
+      {/* Related Articles */}
+      <RelatedArticles posts={relatedPosts} />
 
       {/* Back to Articles */}
       <div className="mt-12 sm:mt-16 pt-8 border-t" style={{ borderColor: 'var(--border)' }}>
@@ -99,6 +153,7 @@ export default async function PostPage({ params }: PageProps) {
         </a>
       </div>
     </article>
+    </>
   );
 }
 
@@ -113,28 +168,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const metaTitle = post.metaTitle || post.title;
-  const metaDescription = post.metaDescription || post.excerpt;
-  const ogImage = post.featuredImage 
-    ? urlFor(post.featuredImage).width(1200).height(630).url()
-    : undefined;
+  const metaTitle = post.seo?.metaTitle || post.title;
+  const metaDescription = post.seo?.metaDescription || post.excerpt;
+  
+  // Use ogImage from SEO, fallback to featuredImage, then default
+  const ogImageSource = post.seo?.ogImage || post.featuredImage;
+  const ogImage = ogImageSource 
+    ? urlFor(ogImageSource).width(1200).height(630).url()
+    : `${siteConfig.url}${siteConfig.ogImage}`;
+
+  const canonicalUrl = `${siteConfig.url}/articles/${slug}`;
 
   return {
     title: metaTitle,
     description: metaDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: post.seo?.noIndex ? {
+      index: false,
+      follow: false,
+    } : undefined,
     openGraph: {
       title: metaTitle,
       description: metaDescription,
       type: 'article',
+      url: canonicalUrl,
       publishedTime: post.publishedAt,
       authors: post.author ? [post.author] : undefined,
-      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: post.featuredImage?.alt || post.title }] : undefined,
+      images: [{ 
+        url: ogImage, 
+        width: 1200, 
+        height: 630, 
+        alt: ogImageSource?.alt || post.title 
+      }],
     },
     twitter: {
       card: 'summary_large_image',
       title: metaTitle,
       description: metaDescription,
-      images: ogImage ? [ogImage] : undefined,
+      images: [ogImage],
     },
   };
 }

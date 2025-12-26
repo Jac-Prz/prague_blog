@@ -3,6 +3,8 @@ import PlaceCard from './PlaceCard';
 import TipCallout from './TipCallout';
 import QuickSummary from './QuickSummary';
 import ProsCons from './ProsCons';
+import YouTubeEmbed from './YouTubeEmbed';
+import SocialEmbed from './SocialEmbed';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 
@@ -128,6 +130,8 @@ const portableTextComponents: PortableTextComponents = {
     practicalTip: TipCallout,
     quickSummary: QuickSummary,
     prosCons: ProsCons,
+    youtubeEmbed: YouTubeEmbed,
+    socialEmbed: SocialEmbed,
   },
 };
 

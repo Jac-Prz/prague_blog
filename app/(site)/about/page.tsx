@@ -40,7 +40,7 @@ export default function AboutPage() {
             color: 'var(--foreground)',
             letterSpacing: '-0.02em'
           }}>
-            Who It's Written By
+            Who It&apos;s Written By
           </h2>
           <p className="text-[1rem] sm:text-[1.0625rem] font-normal leading-[1.65]" style={{
             color: 'var(--muted)',
@@ -62,7 +62,7 @@ export default function AboutPage() {
             color: 'var(--muted)',
             letterSpacing: '-0.01em'
           }}>
-            Articles are opinionated by design. If you&apos;re new, start with the guides in "Start Here" or browse by category.
+            Articles are opinionated by design. If you&apos;re new, start with the guides in &ldquo;Start Here&rdquo; or browse by category.
           </p>
           <p className="text-[1rem] sm:text-[1.0625rem] font-normal leading-[1.65]" style={{
             color: 'var(--muted)',

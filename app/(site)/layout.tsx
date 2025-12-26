@@ -1,5 +1,7 @@
 import ThemeToggle from "./theme-toggle";
 import MobileNav from "./mobile-nav";
+import GTMPageView from "@/components/analytics/GTMPageView";
+import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 export default function SiteLayout({
   children,
@@ -61,7 +63,20 @@ export default function SiteLayout({
         <main className="mx-auto w-full max-w-[52rem] px-5 sm:px-6 py-12 sm:py-16 overflow-x-hidden">
           {children}
         </main>
+        
+        <footer className="border-t" style={{ borderColor: 'var(--border)' }}>
+          <div className="mx-auto max-w-[52rem] px-5 sm:px-6 py-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-[0.875rem]" style={{ color: 'var(--muted)' }}>
+                © {new Date().getFullYear()} Practical Prague
+              </p>
+              <CookiePreferencesButton />
+            </div>
+          </div>
+        </footer>
+        
         <ThemeToggle />
+        <GTMPageView />
       </div>
     </>
   );

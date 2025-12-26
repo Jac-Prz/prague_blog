@@ -308,5 +308,15 @@ export const blockContentType = defineType({
         },
       },
     }),
+
+    // YouTube embed
+    defineArrayMember({
+      type: 'youtubeEmbed',
+    }),
+
+    // Social media embed
+    defineArrayMember({
+      type: 'socialEmbed',
+    }),
   ],
 })

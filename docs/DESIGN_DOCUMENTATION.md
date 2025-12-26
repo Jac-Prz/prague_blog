@@ -21,7 +21,9 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 ├── /things-to-do           Category: Attractions, day trips, activities
 ├── /practical-tips         Category: Transport, logistics, systems
 ├── /articles               All articles (chronological, no filters)
-└── /studio                 Sanity Studio CMS (admin)
+├── /articles/[slug]        Individual article page
+├── /about                  About page (editorial, minimal)
+└── /studio                 Sanity Studio CMS (admin, isolated layout)
 ```
 
 ---
@@ -82,7 +84,7 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 **Section Gaps (Vertical Rhythm)**
 - Mobile: `gap-10` (2.5rem / 40px)
 - Small: `gap-16` (4rem / 64px)
-- Medium: `gap-24` (6rem / 96px)
+- Medium: `gap-20` (5rem / 80px)
 
 **Article List Gaps**
 - Mobile: `gap-8` (2rem / 32px)
@@ -151,7 +153,45 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 - Title: "All Articles"
 - Description: "Every guide, recommendation, and practical tip — in chronological order."
 - Full chronological list (no categories shown)
+- Uses reusable `ArticleList` component
 - Intentionally "boring" — just a simple archive
+
+### About Page (`/about`)
+
+**Structure:**
+- Editorial, text-first layout
+- Max-width: 38rem (constrained for readability)
+- Three sections:
+  1. **What Practical Prague Is** — site purpose and focus
+  2. **Who It's Written By** — minimal, no personal branding
+  3. **How to Use the Site** — light onboarding
+- No images, no illustrations, no cards
+- Same typography as article pages
+- ~270 words total (fits on one screen)
+
+### Individual Article Page (`/articles/[slug]`)
+
+**Structure:**
+1. **Featured Image** (optional)
+   - Full-width, responsive
+   - Negative margin to extend to edges
+   
+2. **Article Header**
+   - H1: Article title
+   - Excerpt: Larger subheading text
+   - Metadata: Date • Author • Categories
+
+3. **Article Body**
+   - Portable Text renderer with custom blocks:
+     - **Place Card** — recommendations with details
+     - **Tip Callout** — 4 variants (tip, warning, avoid, logistics)
+     - **Quick Summary** — bullet lists
+     - **Pros/Cons** — two-column comparison
+   - Standard rich text (H2, H3, paragraphs, lists, links)
+
+4. **Back Link**
+   - Border-top separator
+   - "← Back to all articles" link
 
 ---
 
@@ -162,14 +202,16 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 **Desktop Navigation (`md:flex`)**
 - Sticky header: `sticky top-0 z-20`
 - Logo: "PRACTICAL PRAGUE" (all-caps, muted, tracking-wide)
-- Nav items: Eat & Drink (bold) | Neighborhoods | Things to Do | Practical Tips | All Articles (muted)
+- **Primary Nav:** Eat & Drink (bold) | Neighborhoods | Things to Do | Practical Tips
+- **Secondary Nav:** About (muted, smaller, border-left separator)
 - Theme toggle: Fixed bottom-right corner
 
 **Mobile Navigation (`md:hidden`)**
 - Hamburger menu: 3-line icon
 - Slide-out drawer from right
-- Overlay: `z-[90]`, black/50
-- Drawer: `z-[100]`, solid background
+- Overlay: `z-90`, black/50
+- Drawer: `z-100`, solid background
+- Nav items: 4 primary categories + All Articles + About (secondary)
 - Nav item spacing: `gap-7` for better tap targets
 - Close button: × (large, top-right)
 
@@ -182,7 +224,10 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 - Fixed position: `bottom-6 right-6`
 - Icons: Sun (light mode) / Moon (dark mode)
 
-### Article Card
+### Article Card / ArticleList Component
+
+**Reusable Component:**
+`components/ArticleList.tsx` — used across category pages and archives
 
 **Structure:**
 ```tsx
@@ -197,6 +242,13 @@ A calm, readable travel blog built with Next.js, Sanity CMS, and Tailwind CSS. T
 - Title: Georgia serif, 1.25rem → 1.5rem
 - Excerpt: System sans, 0.9375rem → 1rem, muted color
 - Date: 0.8125rem → 0.875rem, muted + opacity 0.7
+- Empty state: Helpful message when no posts exist
+
+**Usage:**
+- Homepage "Latest Articles"
+- Category pages (eat-drink, neighborhoods, etc.)
+- All articles archive
+- Server-side data fetching with type-safe queries
 
 ### Link Hover States
 
@@ -272,39 +324,84 @@ Tailwind v4 requires explicit variable integration. Can't rely solely on utility
 
 ## Technical Stack
 
-**Framework:** Next.js 16.1.1 (App Router)
-**CMS:** Sanity Studio
+**Framework:** Next.js 16.1.1 (App Router, React Server Components)
+**CMS:** Sanity Studio 4.22.0
 **Styling:** Tailwind CSS v4 (via @tailwindcss/postcss)
 **Language:** TypeScript 5
 **React:** 19.2.3
+**Content:** @portabletext/react 6.0.0
+**Images:** Next.js Image with Sanity CDN integration
+
+### Data Architecture
+
+**Sanity TypeGen:**
+- Generates TypeScript types from schema
+- Run: `npm run typegen`
+- Output: `sanity.types.ts`
+
+**Query Functions:**
+- Centralized in `sanity/lib/queries.ts`
+- Type-safe GROQ queries
+- Server-side data fetching
+- Functions:
+  - `getFeaturedPosts()` — Homepage "Start Here"
+  - `getLatestPosts(limit)` — Latest articles
+  - `getPostsByCategory(slug)` — Category filtering
+  - `getAllPosts()` — Articles archive
+  - `getPostBySlug(slug)` — Individual articles
+  - `getAllPostSlugs()` — Static generation
 
 ### File Structure
 
 ```
 app/
-├── globals.css                 # CSS variables, theme, global styles
-├── layout.tsx                  # Root layout with header/nav
-├── page.tsx                    # Homepage
-├── theme-toggle.tsx            # Light/dark mode toggle
-├── mobile-nav.tsx              # Mobile hamburger menu
-├── eat-drink/page.tsx          # Category page
-├── neighborhoods/page.tsx      # Category page
-├── things-to-do/page.tsx       # Category page
-├── practical-tips/page.tsx     # Category page
-├── articles/page.tsx           # All articles archive
-└── studio/[[...tool]]/page.tsx # Sanity Studio
+├── globals.css                      # CSS variables, theme, global styles
+├── layout.tsx                       # Root layout (html/body only)
+├── (site)/                          # Route group for blog
+│   ├── layout.tsx                   # Site layout with header/nav
+│   ├── page.tsx                     # Homepage (server component)
+│   ├── theme-toggle.tsx             # Light/dark mode toggle
+│   ├── mobile-nav.tsx               # Mobile hamburger menu
+│   ├── about/page.tsx               # About page
+│   ├── eat-drink/page.tsx           # Category page
+│   ├── neighborhoods/page.tsx       # Category page
+│   ├── things-to-do/page.tsx        # Category page
+│   ├── practical-tips/page.tsx      # Category page
+│   ├── articles/
+│   │   ├── page.tsx                 # All articles archive
+│   │   └── [slug]/page.tsx          # Individual article
+│   └── studio/                      # Isolated studio route
+│       ├── layout.tsx               # Minimal layout (children only)
+│       └── [[...tool]]/page.tsx     # Sanity Studio
+
+components/
+├── ArticleList.tsx                  # Reusable article list
+└── portable-text/
+    ├── PortableBody.tsx             # Main renderer
+    ├── PlaceCard.tsx                # Place recommendations
+    ├── TipCallout.tsx               # Tips/warnings/logistics
+    ├── QuickSummary.tsx             # Bullet summaries
+    └── ProsCons.tsx                 # Pros/cons comparison
 
 sanity/
 ├── schemaTypes/
-│   ├── authorType.ts           # Author schema
-│   ├── categoryType.ts         # Category schema (title, slug, description)
-│   ├── postType.ts             # Post schema (title, slug, body, etc.)
-│   └── blockContentType.ts     # Rich text content
+│   ├── authorType.ts                # Author schema
+│   ├── categoryType.ts              # Category schema
+│   ├── postType.ts                  # Post schema (updated metadata)
+│   ├── blockContentType.ts          # Portable Text with custom blocks
+│   └── index.ts                     # Schema registry
 ├── lib/
-│   ├── client.ts               # Sanity client config
-│   ├── image.ts                # Image URL builder
-│   └── live.ts                 # Live preview config
-└── structure.ts                # Studio structure
+│   ├── client.ts                    # Sanity client config
+│   ├── image.ts                     # Image URL builder (urlFor)
+│   ├── live.ts                      # Live preview config
+│   └── queries.ts                   # Type-safe GROQ queries
+├── structure.ts                     # Studio structure
+├── env.ts                           # Environment config
+└── sanity.config.ts                 # Studio configuration
+
+sanity.types.ts                      # Generated TypeScript types
+sanity-codegen.config.ts             # TypeGen configuration
+next.config.ts                       # Next.js config (Sanity CDN images)
 ```
 
 ---
@@ -347,11 +444,11 @@ sanity/
 
 ### Potential Enhancements
 
-- Author page (`/about`)
 - Search functionality (simple, full-page)
 - Related articles (below post content)
 - RSS feed
 - Newsletter signup (footer only)
+- Performance optimization (ISR, image optimization)
 
 ### What NOT to Add
 
@@ -361,6 +458,7 @@ sanity/
 - Tag clouds
 - Sidebar widgets
 - Pop-ups or banners
+- Personal author photos or branding
 
 ---
 
@@ -371,22 +469,31 @@ sanity/
 ✅ Typography system (Georgia serif + system sans)
 ✅ Theme toggle (light mode default)
 ✅ Mobile-first responsive design
-✅ Navigation structure (desktop + mobile)
-✅ Homepage layout
-✅ Category pages (4 categories)
-✅ All Articles archive page
-✅ Mobile nav functionality
-✅ Link hover states
-✅ Active states for touch
+✅ Navigation structure (desktop + mobile, primary/secondary groups)
+✅ Homepage layout with real Sanity data
+✅ Category pages (4 categories) with data integration
+✅ All Articles archive page with data integration
+✅ About page (editorial, minimal)
+✅ Individual article template with Portable Text
+✅ Custom Portable Text blocks (Place, Tip, Summary, Pros/Cons)
+✅ Mobile nav functionality with About link
+✅ Link hover states and active states for touch
 ✅ Consistent spacing system
+✅ Sanity schema with metadata fields (metaTitle, metaDescription, featuredImage)
+✅ TypeGen setup for type-safe queries
+✅ Server-side data fetching with GROQ
+✅ Reusable ArticleList component
+✅ Route groups for studio isolation
+✅ SEO metadata with Open Graph and Twitter Cards
+✅ Next.js Image integration with Sanity CDN
 
 **Next Steps:**
-- Connect to Sanity CMS for real content
-- Build individual article page template
-- Add About page
-- Test cross-browser compatibility
-- Performance optimization
-- Deploy to production
+- Create sample content in Sanity Studio
+- Test with real articles and featured posts
+- Cross-browser compatibility testing
+- Performance optimization (image optimization, caching)
+- Deploy to production (Vercel recommended)
+- Set up Sanity dataset (production environment)
 
 ---
 
@@ -416,11 +523,50 @@ All typography uses inline styles with CSS variables. To adjust:
 
 ```
 Header:         z-20
-Overlay:        z-[90]
-Mobile drawer:  z-[100]
+Overlay:        z-90
+Mobile drawer:  z-100
 ```
 
 Keep mobile nav layers above header to prevent interaction issues.
+
+### Sanity Schema Updates
+
+**Post Schema Fields:**
+- `title` (required)
+- `slug` (required, auto-generated)
+- `excerpt` (required, max 200 chars)
+- `author` (reference)
+- `mainImage` (legacy, optional)
+- `categories` (required, 1-2 refs)
+- `featured` (boolean, for "Start Here")
+- `publishedAt` (required)
+- `body` (blockContent with custom blocks)
+- `metaTitle` (optional, defaults to title)
+- `metaDescription` (optional, defaults to excerpt)
+- `featuredImage` (optional, for social sharing & article header)
+
+**Custom Block Types:**
+- `place` — Name, category, price, details, map link
+- `practicalTip` — Variants: tip, warning, avoid, logistics
+- `quickSummary` — Title + bullet list (2-6 items)
+- `prosCons` — Pros array + cons array
+
+### Data Fetching Pattern
+
+All pages use async server components:
+```tsx
+export default async function Page() {
+  const data = await getDataFunction();
+  return <Component data={data} />;
+}
+```
+
+Benefits:
+- Server-side rendering
+- Type safety with generated types
+- No loading states needed
+- Better SEO
+- Simplified data flow
 
 ---
 

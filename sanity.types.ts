@@ -13,6 +13,20 @@
  */
 
 // Source: schema.json
+export type SocialEmbed = {
+  _type: "socialEmbed";
+  platform?: "instagram" | "facebook" | "bluesky" | "x";
+  url?: string;
+  caption?: string;
+};
+
+export type YoutubeEmbed = {
+  _type: "youtubeEmbed";
+  url?: string;
+  title?: string;
+  caption?: string;
+};
+
 export type Post = {
   _id: string;
   _type: "post";
@@ -21,6 +35,7 @@ export type Post = {
   _rev: string;
   title?: string;
   slug?: Slug;
+  status?: "draft" | "published";
   excerpt?: string;
   author?: {
     _ref: string;
@@ -51,8 +66,6 @@ export type Post = {
   featured?: boolean;
   publishedAt?: string;
   body?: BlockContent;
-  metaTitle?: string;
-  metaDescription?: string;
   featuredImage?: {
     asset?: {
       _ref: string;
@@ -65,6 +78,24 @@ export type Post = {
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+  };
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    };
+    noIndex?: boolean;
   };
 };
 
@@ -156,7 +187,11 @@ export type BlockContent = Array<{
   cons?: Array<string>;
   _type: "prosCons";
   _key: string;
-}>;
+} | {
+  _key: string;
+} & YoutubeEmbed | {
+  _key: string;
+} & SocialEmbed>;
 
 export type Author = {
   _id: string;
@@ -311,5 +346,5 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Post | SanityImageCrop | SanityImageHotspot | BlockContent | Author | Slug | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = SocialEmbed | YoutubeEmbed | Post | SanityImageCrop | SanityImageHotspot | BlockContent | Author | Slug | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
