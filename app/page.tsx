@@ -128,6 +128,17 @@ export default function Home() {
             </p>
           </article>
         </div>
+        
+        <div className="pt-6 sm:pt-8">
+          <a 
+            href="/articles" 
+            className="inline-flex items-center gap-2 text-[0.9375rem] font-medium hover:opacity-70 transition-opacity"
+            style={{ color: 'var(--accent)' }}
+          >
+            View all articles
+            <span style={{ fontSize: '0.75em' }}>→</span>
+          </a>
+        </div>
       </section>
     </div>
   );

@@ -1,0 +1,194 @@
+export default function ArticlesPage() {
+  return (
+    <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
+      <header>
+        <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-semibold leading-[1.2] mb-3 sm:mb-4" style={{
+          fontFamily: 'Georgia, serif',
+          color: 'var(--foreground)',
+          letterSpacing: '-0.025em'
+        }}>
+          All Articles
+        </h1>
+        <p className="text-[1rem] sm:text-[1.0625rem] font-normal leading-[1.55]" style={{
+          color: 'var(--muted)',
+          letterSpacing: '-0.01em'
+        }}>
+          Every guide, recommendation, and practical tip — in chronological order.
+        </p>
+      </header>
+
+      <section className="flex flex-col gap-8 sm:gap-10">
+        {/* Article 1 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              What to Skip in Prague (And What to Do Instead)
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            The tourist traps that waste your time, and the better alternatives that don't.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 18, 2024
+          </time>
+        </article>
+
+        {/* Article 2 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              A Practical Guide to Eating Well in Prague
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Skip the tourist traps. Where to find authentic Czech food, modern bistros, and cafés that locals actually visit.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 15, 2024
+          </time>
+        </article>
+
+        {/* Article 3 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              How Prague's Public Transport Actually Works
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Trams, metro, tickets, and what tourists get wrong about getting around the city.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 14, 2024
+          </time>
+        </article>
+
+        {/* Article 4 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Where to Stay in Prague (Neighborhoods, Explained)
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Vinohrady, Žižkov, Karlín, or Old Town? A practical breakdown of each area so you can choose wisely.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 12, 2024
+          </time>
+        </article>
+
+        {/* Article 5 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Cafés Locals Actually Go To
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Third-wave coffee, quiet work spots, and neighborhood cafés that aren't overrun with tour groups.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 10, 2024
+          </time>
+        </article>
+
+        {/* Article 6 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Vinohrady: The Neighborhood Where Expats Actually Live
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Tree-lined streets, good restaurants, and parks. Why this is Prague's most livable district.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 8, 2024
+          </time>
+        </article>
+
+        {/* Article 7 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Currency Exchange: How Not to Get Ripped Off
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            The scams to avoid, the best places to exchange money, and whether you should use cash or card.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 7, 2024
+          </time>
+        </article>
+
+        {/* Article 8 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Where to Get Breakfast in Prague (That Isn't a Hotel Buffet)
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Prague's breakfast scene has improved dramatically. Here's where to start your morning properly.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 5, 2024
+          </time>
+        </article>
+
+        {/* Article 9 */}
+        <article>
+          <h2 className="text-[1.25rem] sm:text-[1.5rem] font-semibold mb-2 leading-[1.3]" style={{
+            fontFamily: 'Georgia, serif',
+            color: 'var(--foreground)',
+            letterSpacing: '-0.02em'
+          }}>
+            <a href="#" className="link-hover" style={{ color: 'inherit' }}>
+              Day Trips from Prague That Are Actually Worth It
+            </a>
+          </h2>
+          <p className="text-[0.9375rem] sm:text-[1rem] leading-[1.65] mb-2" style={{ color: 'var(--muted)' }}>
+            Český Krumlov gets all the attention, but there are better options if you know where to look.
+          </p>
+          <time className="text-[0.8125rem] sm:text-[0.875rem]" style={{ color: 'var(--muted)', opacity: 0.7 }}>
+            December 3, 2024
+          </time>
+        </article>
+      </section>
+    </div>
+  );
+}

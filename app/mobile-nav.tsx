@@ -48,7 +48,7 @@ export default function MobileNav() {
             </div>
             <nav className="flex flex-col gap-7 px-6 py-4">
               <a
-                href="#"
+                href="/eat-drink"
                 style={{ color: 'var(--foreground)' }}
                 className="text-base font-medium hover:opacity-70 transition-opacity"
                 onClick={() => setIsOpen(false)}
@@ -56,7 +56,7 @@ export default function MobileNav() {
                 Eat & Drink
               </a>
               <a
-                href="#"
+                href="/neighborhoods"
                 style={{ color: 'var(--foreground)' }}
                 className="text-base hover:opacity-70 transition-opacity"
                 onClick={() => setIsOpen(false)}
@@ -64,7 +64,7 @@ export default function MobileNav() {
                 Neighborhoods
               </a>
               <a
-                href="#"
+                href="/things-to-do"
                 style={{ color: 'var(--foreground)' }}
                 className="text-base hover:opacity-70 transition-opacity"
                 onClick={() => setIsOpen(false)}
@@ -72,7 +72,7 @@ export default function MobileNav() {
                 Things to Do
               </a>
               <a
-                href="#"
+                href="/practical-tips"
                 style={{ color: 'var(--foreground)' }}
                 className="text-base hover:opacity-70 transition-opacity"
                 onClick={() => setIsOpen(false)}
@@ -80,13 +80,13 @@ export default function MobileNav() {
                 Practical Tips
               </a>
               <a
-                href="#"
+                href="/articles"
                 style={{ color: 'var(--muted)', opacity: 0.75 }}
                 className="text-base hover:opacity-70 transition-opacity pt-4 border-t"
                 style={{ borderColor: 'var(--border)', color: 'var(--muted)', opacity: 0.75 }}
                 onClick={() => setIsOpen(false)}
               >
-                About
+                All Articles
               </a>
             </nav>
           </div>
