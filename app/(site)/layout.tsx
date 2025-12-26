@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ThemeToggle from "./theme-toggle";
 import MobileNav from "./mobile-nav";
 import GTMPageView from "@/components/analytics/GTMPageView";
@@ -76,7 +77,9 @@ export default function SiteLayout({
         </footer>
         
         <ThemeToggle />
-        <GTMPageView />
+        <Suspense fallback={null}>
+          <GTMPageView />
+        </Suspense>
       </div>
     </>
   );

@@ -40,7 +40,7 @@ export default function ThemeToggle() {
         backgroundColor: 'var(--card-bg)',
         border: '1px solid var(--border)',
         color: 'var(--foreground)',
-        focusRingColor: 'var(--accent)'
+        outlineColor: 'var(--accent)'
       }}
     >
       {theme === "light" ? (

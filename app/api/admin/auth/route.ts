@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, clearRateLimit } from '@/lib/rate-limit';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,8 +31,17 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Password check
-    if (password === ADMIN_PASSWORD) {
+    // Password check - support both plain text (for backward compatibility) and hashed
+    let isValid = false;
+    if (ADMIN_PASSWORD.startsWith('$2a$') || ADMIN_PASSWORD.startsWith('$2b$')) {
+      // Hashed password (bcrypt)
+      isValid = await bcrypt.compare(password, ADMIN_PASSWORD);
+    } else {
+      // Plain text password (backward compatibility)
+      isValid = password === ADMIN_PASSWORD;
+    }
+    
+    if (isValid) {
       // Clear rate limit on successful login
       clearRateLimit(ip);
       

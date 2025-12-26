@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+// Disable static generation for this protected admin page
+export const dynamic = 'force-dynamic';
+
 type DraftPost = {
   _id: string;
   title: string;
@@ -20,16 +23,10 @@ export default function AdminDraftsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check authentication
-    const isAuth = sessionStorage.getItem("admin_authenticated");
-    if (isAuth !== "true") {
-      router.push("/admin");
-      return;
-    }
-
-    // Fetch drafts
+    // Middleware handles authentication
+    // Fetch drafts directly
     fetchDrafts();
-  }, [router]);
+  }, []);
 
   const fetchDrafts = async () => {
     try {
@@ -47,8 +44,8 @@ export default function AdminDraftsPage() {
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("admin_authenticated");
+  const handleLogout = async () => {
+    await fetch("/api/admin/auth", { method: "DELETE" });
     router.push("/admin");
   };
 

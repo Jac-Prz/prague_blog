@@ -81,7 +81,6 @@ export default function MobileNav() {
               </a>
               <a
                 href="/articles"
-                style={{ color: 'var(--muted)', opacity: 0.75 }}
                 className="text-base hover:opacity-70 transition-opacity pt-4 border-t"
                 style={{ borderColor: 'var(--border)', color: 'var(--muted)', opacity: 0.75 }}
                 onClick={() => setIsOpen(false)}

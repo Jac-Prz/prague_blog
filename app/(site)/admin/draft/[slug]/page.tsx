@@ -5,6 +5,9 @@ import PortableBody from '@/components/portable-text/PortableBody';
 import { getPostBySlugAdmin } from '@/sanity/lib/queries';
 import { urlFor } from '@/sanity/lib/image';
 
+// Disable static generation for this protected admin page
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{
     slug: string;

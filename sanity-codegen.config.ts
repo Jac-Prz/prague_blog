@@ -1,8 +1,8 @@
-{
-  "schema": "./sanity/schemaTypes/index.ts",
-  "generates": {
+export default {
+  schema: "./sanity/schemaTypes/index.ts",
+  generates: {
     "./sanity/types.ts": {
-      "plugins": ["typescript"]
+      plugins: ["typescript"]
     }
   }
-}
+};

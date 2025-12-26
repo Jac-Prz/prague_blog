@@ -153,8 +153,8 @@ export const blockContentType = defineType({
           category: 'category',
           neighborhood: 'neighborhood',
         },
-        prepare({name, category, neighborhood}) {
-          const emoji = {
+        prepare({name, category, neighborhood}: {name?: string; category?: string; neighborhood?: string}) {
+          const emojiMap: Record<string, string> = {
             cafe: '☕',
             restaurant: '🍽️',
             bar: '🍺',
@@ -162,11 +162,12 @@ export const blockContentType = defineType({
             market: '🛒',
             shop: '🏪',
             other: '📍',
-          }[category] || '📍'
+          };
+          const emoji = category ? (emojiMap[category] || '📍') : '📍';
           
           return {
-            title: `${emoji} ${name}`,
-            subtitle: neighborhood || category,
+            title: `${emoji} ${name || 'Untitled'}`,
+            subtitle: neighborhood || category || '',
           }
         },
       },
@@ -224,16 +225,18 @@ export const blockContentType = defineType({
           variant: 'variant',
           title: 'title',
         },
-        prepare({variant, title}) {
-          const emoji = {
+        prepare({variant, title}: {variant?: string; title?: string}) {
+          const emojiMap: Record<string, string> = {
             tip: '💡',
             warning: '⚠️',
             avoid: '🚫',
             logistics: '📋',
-          }[variant] || '💡'
+          };
+          const emoji = variant ? (emojiMap[variant] || '💡') : '💡';
+          const variantName = variant ? variant.charAt(0).toUpperCase() + variant.slice(1) : 'Tip';
           
           return {
-            title: `${emoji} ${variant.charAt(0).toUpperCase() + variant.slice(1)}`,
+            title: `${emoji} ${variantName}`,
             subtitle: title || 'Practical tip',
           }
         },
