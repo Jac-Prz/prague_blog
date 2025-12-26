@@ -60,6 +60,24 @@ a.link-hover:hover {
   color: var(--accent);
 }
 
+/* Portable Text Styles */
+.portable-text p:last-child {
+  margin-bottom: 0;
+}
+
+.portable-text ul,
+.portable-text ol {
+  color: var(--foreground);
+}
+
+.portable-text ul li::marker {
+  color: var(--accent);
+}
+
+.portable-text ol li::marker {
+  color: var(--muted);
+}
+
 ::selection {
   background: rgba(166, 77, 77, 0.15);
   color: var(--foreground);

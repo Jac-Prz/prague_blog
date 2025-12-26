@@ -1,6 +1,4 @@
-export default function ArticlesPage() {
-  return (
-    <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
+<div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
       <header>
         <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] font-semibold leading-[1.2] mb-3 sm:mb-4" style={{
           fontFamily: 'Georgia, serif',
@@ -190,5 +188,5 @@ export default function ArticlesPage() {
         </article>
       </section>
     </div>
-  );
+  )
 }
